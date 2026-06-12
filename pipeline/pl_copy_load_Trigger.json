@@ -50,13 +50,23 @@
 				"inputs": [
 					{
 						"referenceName": "ds_source_ST",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"containername": "raw",
+							"directoryname": "sales",
+							"filename": "sales.csv"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_sink_ST",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"containername": "input",
+							"directoryname": "input1",
+							"filename": "sales.csv"
+						}
 					}
 				]
 			}
