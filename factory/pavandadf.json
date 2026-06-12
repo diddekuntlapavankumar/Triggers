@@ -1,0 +1,15 @@
+{
+	"name": "pavandadf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2d9de11c-9bc6-4aa6-900c-913e24ec719d",
+		"tenantId": "7ab416e2-3465-4dd5-8ecb-373dfb0fbb28"
+	}
+}
