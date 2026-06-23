@@ -22,6 +22,12 @@
 		},
 		"ls_adls_source_Tumbling_properties_typeProperties_url": {
 			"value": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"trg_sales_hourly_properties_pipeline_parameters_p_window_start": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"trg_sales_hourly_properties_pipeline_parameters_p_window_end": {
+			"value": "@trigger().outputs.windowEndTime"
 		}
 	}
 }
