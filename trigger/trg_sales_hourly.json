@@ -9,7 +9,7 @@
 				"type": "PipelineReference"
 			},
 			"parameters": {
-				"p_window_star": "@trigger().outputs.windowStartTime",
+				"p_window_start": "@trigger().outputs.windowStartTime",
 				"p_window_end": "@trigger().outputs.windowEndTime"
 			}
 		},
