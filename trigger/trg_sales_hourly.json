@@ -1,0 +1,29 @@
+{
+	"name": "trg_sales_hourly",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "pl_tumbling_window_demo",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"p_window_star": "@trigger().outputs.windowStartTime",
+				"p_window_end": "@trigger().outputs.windowEndTime"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Hour",
+			"interval": 1,
+			"startTime": "2026-06-23T01:00:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}

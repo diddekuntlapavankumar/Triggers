@@ -1,0 +1,21 @@
+{
+	"name": "ds_sales_bronze",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_source_Tumbling",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
