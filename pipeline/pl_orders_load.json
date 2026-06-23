@@ -65,7 +65,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"containername": "output",
-							"directoryname": "output",
+							"directoryname": "output1",
 							"filename": "sales_data.csv"
 						}
 					}
