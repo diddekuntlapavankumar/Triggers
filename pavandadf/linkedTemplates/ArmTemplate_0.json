@@ -15,11 +15,19 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'Adls_St'"
 		},
+		"ls_adls_source_Tumbling_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls_source_Tumbling'"
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://silveradlsstorage.dfs.core.windows.net/"
 		},
 		"Adls_St_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"ls_adls_source_Tumbling_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
 		}
@@ -57,6 +65,23 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('Adls_St_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adls_source_Tumbling')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adls_source_Tumbling_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_adls_source_Tumbling_accountKey')]"
 					}
 				}
 			},
@@ -425,7 +450,7 @@
 					"recurrence": {
 						"frequency": "Minute",
 						"interval": 5,
-						"startTime": "2026-06-24T22:05:00",
+						"startTime": "2026-06-23T22:20:00",
 						"timeZone": "India Standard Time"
 					}
 				}

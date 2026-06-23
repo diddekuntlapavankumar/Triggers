@@ -11,10 +11,16 @@
 		"Adls_St_accountKey": {
 			"value": ""
 		},
+		"ls_adls_source_Tumbling_accountKey": {
+			"value": ""
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"value": "https://silveradlsstorage.dfs.core.windows.net/"
 		},
 		"Adls_St_properties_typeProperties_url": {
+			"value": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"ls_adls_source_Tumbling_properties_typeProperties_url": {
 			"value": "https://bronzeadlsstorage.dfs.core.windows.net/"
 		},
 		"containerUri": {

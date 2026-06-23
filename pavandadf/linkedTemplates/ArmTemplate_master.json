@@ -15,11 +15,19 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'Adls_St'"
 		},
+		"ls_adls_source_Tumbling_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls_source_Tumbling'"
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://silveradlsstorage.dfs.core.windows.net/"
 		},
 		"Adls_St_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"ls_adls_source_Tumbling_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
 		},
@@ -56,11 +64,17 @@
 					"Adls_St_accountKey": {
 						"value": "[parameters('Adls_St_accountKey')]"
 					},
+					"ls_adls_source_Tumbling_accountKey": {
+						"value": "[parameters('ls_adls_source_Tumbling_accountKey')]"
+					},
 					"Adls_1_properties_typeProperties_url": {
 						"value": "[parameters('Adls_1_properties_typeProperties_url')]"
 					},
 					"Adls_St_properties_typeProperties_url": {
 						"value": "[parameters('Adls_St_properties_typeProperties_url')]"
+					},
+					"ls_adls_source_Tumbling_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_source_Tumbling_properties_typeProperties_url')]"
 					}
 				}
 			},
