@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_source_Tumbling'"
 		},
+		"Adls_ET_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Adls_ET'"
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://silveradlsstorage.dfs.core.windows.net/"
@@ -38,6 +42,18 @@
 		"trg_sales_hourly_properties_pipeline_parameters_p_window_end": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"Adls_ET_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"trg_orders_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/55374cb7-f21f-4dcb-9800-3316bec4ffac/resourceGroups/rg-datawarehouse-dev/providers/Microsoft.Storage/storageAccounts/bronzeadlsstorage"
 		},
 		"containerUri": {
 			"type": "string",
@@ -75,6 +91,9 @@
 					"ls_adls_source_Tumbling_accountKey": {
 						"value": "[parameters('ls_adls_source_Tumbling_accountKey')]"
 					},
+					"Adls_ET_accountKey": {
+						"value": "[parameters('Adls_ET_accountKey')]"
+					},
 					"Adls_1_properties_typeProperties_url": {
 						"value": "[parameters('Adls_1_properties_typeProperties_url')]"
 					},
@@ -84,11 +103,20 @@
 					"ls_adls_source_Tumbling_properties_typeProperties_url": {
 						"value": "[parameters('ls_adls_source_Tumbling_properties_typeProperties_url')]"
 					},
+					"Adls_ET_properties_typeProperties_url": {
+						"value": "[parameters('Adls_ET_properties_typeProperties_url')]"
+					},
 					"trg_sales_hourly_properties_pipeline_parameters_p_window_start": {
 						"value": "[parameters('trg_sales_hourly_properties_pipeline_parameters_p_window_start')]"
 					},
 					"trg_sales_hourly_properties_pipeline_parameters_p_window_end": {
 						"value": "[parameters('trg_sales_hourly_properties_pipeline_parameters_p_window_end')]"
+					},
+					"trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name": {
+						"value": "[parameters('trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name')]"
+					},
+					"trg_orders_event_properties_typeProperties_scope": {
+						"value": "[parameters('trg_orders_event_properties_typeProperties_scope')]"
 					}
 				}
 			},

@@ -14,6 +14,9 @@
 		"ls_adls_source_Tumbling_accountKey": {
 			"value": ""
 		},
+		"Adls_ET_accountKey": {
+			"value": ""
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"value": "https://silveradlsstorage.dfs.core.windows.net/"
 		},
@@ -28,6 +31,15 @@
 		},
 		"trg_sales_hourly_properties_pipeline_parameters_p_window_end": {
 			"value": "@trigger().outputs.windowEndTime"
+		},
+		"Adls_ET_properties_typeProperties_url": {
+			"value": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
+		"trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name": {
+			"value": "@triggerBody().fileName"
+		},
+		"trg_orders_event_properties_typeProperties_scope": {
+			"value": "/subscriptions/55374cb7-f21f-4dcb-9800-3316bec4ffac/resourceGroups/rg-datawarehouse-dev/providers/Microsoft.Storage/storageAccounts/bronzeadlsstorage"
 		},
 		"containerUri": {
 			"value": ""

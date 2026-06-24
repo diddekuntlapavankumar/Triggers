@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_source_Tumbling'"
 		},
+		"Adls_ET_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Adls_ET'"
+		},
 		"Adls_1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://silveradlsstorage.dfs.core.windows.net/"
@@ -31,6 +35,10 @@
 			"type": "string",
 			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
 		},
+		"Adls_ET_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bronzeadlsstorage.dfs.core.windows.net/"
+		},
 		"trg_sales_hourly_properties_pipeline_parameters_p_window_start": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -38,6 +46,14 @@
 		"trg_sales_hourly_properties_pipeline_parameters_p_window_end": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"trg_orders_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/55374cb7-f21f-4dcb-9800-3316bec4ffac/resourceGroups/rg-datawarehouse-dev/providers/Microsoft.Storage/storageAccounts/bronzeadlsstorage"
 		}
 	},
 	"variables": {
@@ -90,6 +106,23 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('ls_adls_source_Tumbling_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Adls_ET')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('Adls_ET_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('Adls_ET_accountKey')]"
 					}
 				}
 			},
@@ -354,6 +387,71 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_adls_source_Tumbling')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_orders_source_ET')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adls_ET",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"p_file_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().p_file_name",
+							"type": "Expression"
+						},
+						"folderPath": "orders",
+						"fileSystem": "landing1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adls_ET')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_orders_bronze_sink_ET')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adls_ET",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "orders",
+						"fileSystem": "bronze1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adls_ET')]"
 			]
 		},
 		{
@@ -674,6 +772,91 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_event_orders_load')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_orders_source_ET",
+								"type": "DatasetReference",
+								"parameters": {
+									"p_file_name": "@pipeline().parameters.p_file_name"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_orders_bronze_sink_ET",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"p_file_name": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_orders_source_ET')]",
+				"[concat(variables('factoryId'), '/datasets/ds_orders_bronze_sink_ET')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/trg_daily_orders_load')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -709,7 +892,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipeline": {
 					"pipelineReference": {
 						"referenceName": "pl_tumbling_window_demo",
@@ -735,6 +918,39 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/pl_tumbling_window_demo')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trg_orders_event')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_event_orders_load",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"p_file_name": "[parameters('trg_orders_event_properties_pl_event_orders_load_parameters_p_file_name')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/landing1/blobs/orders/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trg_orders_event_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_event_orders_load')]"
 			]
 		}
 	]
