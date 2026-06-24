@@ -2,7 +2,7 @@
 	"name": "trg_sales_hourly",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "pl_tumbling_window_demo",
