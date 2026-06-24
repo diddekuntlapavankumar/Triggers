@@ -1,0 +1,25 @@
+{
+	"name": "trg_orders_event",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_event_orders_load",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/landing1/blobs/orders/",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/55374cb7-f21f-4dcb-9800-3316bec4ffac/resourceGroups/rg-datawarehouse-dev/providers/Microsoft.Storage/storageAccounts/bronzeadlsstorage",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
