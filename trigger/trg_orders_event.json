@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "pl_event_orders_load",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"p_file_name": "@triggerBody().fileName"
 				}
 			}
 		],
